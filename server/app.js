@@ -34,9 +34,9 @@ app.use("/api/v1", userRouter);
 const ordersRouter = require("./routes/ordersRoutes");
 app.use("/api/v1", ordersRouter);
 
-app.get("/", (req, res) => {
-  res.send("Home page");
-});
+// app.get("/", (req, res) => {
+//   res.send("Home page");
+// });
 
 // ===================== MY OWN MIDDLEWARES =====================
 
