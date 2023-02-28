@@ -40,26 +40,26 @@ app.use("/api/v1", ordersRouter);
 
 // ===================== MY OWN MIDDLEWARES =====================
 
-app.use(
-  "/uploads",
-  express.static(path.join(`${__dirname}../../`, "/uploads"))
-);
+// app.use(
+//   "/uploads",
+//   express.static(path.join(`${__dirname}../../`, "/uploads"))
+// );
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(`${__dirname}../../`, "/client/build")));
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(`${__dirname}../../`, "/client/build")));
 
-  app.get("*", (req, res) =>
-    res.sendFile(
-      path.resolve(`${__dirname}../../`, "client", "build", "index.html")
-    )
-  );
-  console.log("hello from middleware inside '* production static' ");
-} else {
-  app.use((req, res, next) => {
-    console.log("hello from my own middleware ! 👋");
-    next();
-  });
-}
+//   app.get("*", (req, res) =>
+//     res.sendFile(
+//       path.resolve(`${__dirname}../../`, "client", "build", "index.html")
+//     )
+//   );
+//   console.log("hello from middleware inside '* production static' ");
+// } else {
+//   app.use((req, res, next) => {
+//     console.log("hello from my own middleware ! 👋");
+//     next();
+//   });
+// }
 
 // app.use((req, res, next) => {
 //   // res.json({ status: "success", message: "hello world!" });
