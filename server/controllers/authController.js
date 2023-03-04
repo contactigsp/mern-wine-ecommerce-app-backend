@@ -38,7 +38,7 @@ const signupUser = catchAsync(async (req, res) => {
   res.status(201).json({
     status: "success",
     message: "signup user",
-    data: { fullname, email, token },
+    data: { _id: user._id,fullname, email, token },
   });
 });
 
