@@ -34,46 +34,11 @@ app.use("/api/v1", userRouter);
 const ordersRouter = require("./routes/ordersRoutes");
 app.use("/api/v1", ordersRouter);
 
-// app.get("/", (req, res) => {
-//   res.send("Home page");
-// });
-
-// ===================== MY OWN MIDDLEWARES =====================
-
-app.use(express.static(path.join(__dirname, "client", "build")))
-
-// ...
-// Right before your app.listen(), add this:
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+app.get("/", (req, res) => {
+  res.send("Home page");
 });
 
-// app.use(
-//   "/uploads",
-//   express.static(path.join(`${__dirname}../../`, "/uploads"))
-// );
-
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static(path.join(`${__dirname}../../`, "/client/build")));
-
-//   app.get("*", (req, res) =>
-//     res.sendFile(
-//       path.resolve(`${__dirname}../../`, "client", "build", "index.html")
-//     )
-//   );
-//   console.log("hello from middleware inside '* production static' ");
-// } else {
-//   app.use((req, res, next) => {
-//     console.log("hello from my own middleware ! 👋");
-//     next();
-//   });
-// }
-
-// app.use((req, res, next) => {
-//   // res.json({ status: "success", message: "hello world!" });
-//   console.log("hello from my own middleware ! 👋");
-//   next();
-// });
+// ===================== MY OWN MIDDLEWARES =====================
 
 app.get("/api/config/paypal", (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID);
