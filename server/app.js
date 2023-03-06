@@ -1,53 +1,37 @@
-const express = require("express");
-const path = require("path");
-const cors = require("cors")
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config({ path: "./config.env" });
+const connectDB = require("./config/db");
 
-const app = express();
-app.use(express.json());
-const AppError = require("./utils/appError");
-const globalErrorHandler = require("./controllers/errorController");
+// ================== CONNECT TO MONGO DB ==================
+const app = require(`${__dirname}/app`); // this line of code goes after dotenv because otherwise it wouldn't have the data about url to console log
 
-// =================== THIRD-PART MIDDLEWARES ===================
-const morgan = require("morgan"); //morgan is a Node. js and Express middleware to log HTTP requests and errors, and simplifies the process.
+connectDB();
 
-// if (process.env.NODE_ENV === "development") {
-app.use(morgan("dev")); // Morgan gives us info about request in the node repl
-// }
-setTimeout(() => console.log(process.env.NODE_ENV));
+// const DB = process.env.DATABASE.replace(
+//   "<PASSWORD>",
+//   process.env.DATABASE_PASSWORD
+// );
 
-app.use(
-  cors({
-    origin: [
-      //"http://localhost:3000",
-      "https://mern-wine-ecommerce-app.onrender.com",
-    ],
-  })
-);
+// // connect to db
+// mongoose.set("strictQuery", true);
+// mongoose
+//   .connect(DB, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   })
+//   .then((con) => {
+//     // listen for requests
+    const port = process.env.PORT || 6000;
+//     app.listen(port, () => {
+//       console.log("DB connection successfully and listening on port", port);
+//     });
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
 
-// ========================== MOUNTING ==========================
-const productsRouter = require("./routes/productsRoutes");
-app.use("/api/v1", productsRouter); // in the express.Router().route("") we define the routes but we have to use this middleware to actually listen to the requests (its like acting between client and server), res, update and delete.
-
-const userRouter = require("./routes/userRoutes");
-app.use("/api/v1", userRouter);
-
-const ordersRouter = require("./routes/ordersRoutes");
-app.use("/api/v1", ordersRouter);
-
-app.get("/", (req, res) => {
-  res.send("Home page");
-});
-
-// ===================== MY OWN MIDDLEWARES =====================
-
-app.get("/api/config/paypal", (req, res) => {
-  res.send(process.env.PAYPAL_CLIENT_ID);
-});
-
-app.all("*", (req, res, next) => {
-  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
-});
-
-app.use(globalErrorHandler);
-
-module.exports = app;
+mongoose.connection.once('open', () => {
+  // console.log('Connected to MongoDB')
+  app.listen(port, () => console.log(`Server running on port ${port}`))
+})
