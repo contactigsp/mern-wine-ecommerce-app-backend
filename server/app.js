@@ -40,6 +40,14 @@ app.use("/api/v1", ordersRouter);
 
 // ===================== MY OWN MIDDLEWARES =====================
 
+app.use(express.static(path.join(__dirname, "client", "build")))
+
+// ...
+// Right before your app.listen(), add this:
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
+
 // app.use(
 //   "/uploads",
 //   express.static(path.join(`${__dirname}../../`, "/uploads"))
